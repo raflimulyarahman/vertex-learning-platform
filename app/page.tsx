@@ -1,851 +1,704 @@
 import React from "react";
-import { CirclePlay, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import {
-  VertexLogo,
-  VertexIcon,
-  type VertexIconName,
-  Button,
-  SearchInput,
-  SelectInput,
-  Badge,
-  StatusIndicator,
-  ProgressBar,
-  CourseCardPreview,
-  VideoLessonCardPreview,
-  LessonCardPreview,
-  ResourceCardPreview,
-  BrandNavbarPreview,
-  BreadcrumbsPreview,
-  PaginationPreview,
-  PRINCIPLES_LIST,
-} from "@/components/ui/design-system";
+  ArrowRight,
+  Bell,
+  Clock,
+  FileText,
+  Search,
+  Star,
+} from "lucide-react";
+import { VertexLogo } from "@/components/ui/design-system";
 
 /* -------------------------------------------------------------------------- */
-/*                               DESIGN TOKENS                                */
+/*                               COURSE EMBLEMS                               */
 /* -------------------------------------------------------------------------- */
 
-const PRIMARY_COLORS = [
-  { name: "Primary 500", hex: "#F97316" },
-  { name: "Primary 400", hex: "#FB923C" },
-  { name: "Primary 300", hex: "#FDBA74" },
-  { name: "Primary 200", hex: "#FED7AA" },
-  { name: "Primary 100", hex: "#FFEEE5", bordered: true },
-];
-
-const NEUTRAL_COLORS = [
-  { name: "Neutral 900", hex: "#0F172A" },
-  { name: "Neutral 700", hex: "#334155" },
-  { name: "Neutral 500", hex: "#64748B" },
-  { name: "Neutral 300", hex: "#CBD5E1" },
-  { name: "Neutral 200", hex: "#E2E8F0" },
-  { name: "Neutral 100", hex: "#F1F5F9" },
-  { name: "Neutral 50", hex: "#FAFAFC", bordered: true },
-  { name: "White", hex: "#FFFFFF", bordered: true },
-];
-
-const TYPE_SCALE = [
-  {
-    style: "Display 1",
-    font: "Playfair Display",
-    size: "48 / 56",
-    weight: "Bold",
-    use: "Page titles",
-    previewClass: "font-display text-[21px] leading-[28px] font-bold text-[#0F172A]",
-  },
-  {
-    style: "Display 2",
-    font: "Playfair Display",
-    size: "36 / 44",
-    weight: "Bold",
-    use: "Section titles",
-    previewClass: "font-display text-[18px] leading-[24px] font-bold text-[#0F172A]",
-  },
-  {
-    style: "Heading 1",
-    font: "Inter",
-    size: "28 / 36",
-    weight: "Semi Bold",
-    use: "Card titles",
-    previewClass: "font-sans text-[16px] leading-[22px] font-semibold text-[#0F172A]",
-  },
-  {
-    style: "Heading 2",
-    font: "Inter",
-    size: "22 / 30",
-    weight: "Semi Bold",
-    use: "Sub section",
-    previewClass: "font-sans text-[15px] leading-[20px] font-semibold text-[#0F172A]",
-  },
-  {
-    style: "Heading 3",
-    font: "Inter",
-    size: "18 / 26",
-    weight: "Medium",
-    use: "Small titles",
-    previewClass: "font-sans text-[14px] leading-[20px] font-medium text-[#0F172A]",
-  },
-  {
-    style: "Body Large",
-    font: "Inter",
-    size: "16 / 24",
-    weight: "Regular",
-    use: "Body copy",
-    previewClass: "font-sans text-[13.5px] leading-[20px] font-normal text-[#0F172A]",
-  },
-  {
-    style: "Body",
-    font: "Inter",
-    size: "14 / 20",
-    weight: "Regular",
-    use: "Supporting text",
-    previewClass: "font-sans text-[13px] leading-[18px] font-normal text-[#334155]",
-  },
-  {
-    style: "Small",
-    font: "Inter",
-    size: "12 / 16",
-    weight: "Regular",
-    use: "Captions, meta",
-    previewClass: "font-sans text-[12px] leading-[16px] font-normal text-[#475569]",
-  },
-];
-
-const SPACING_STEPS = [
-  { px: 4, rem: "0.25rem", w: 12, h: 12 },
-  { px: 8, rem: "0.5rem", w: 16, h: 16 },
-  { px: 12, rem: "0.75rem", w: 20, h: 20 },
-  { px: 16, rem: "1rem", w: 24, h: 24 },
-  { px: 24, rem: "1.5rem", w: 30, h: 30 },
-  { px: 32, rem: "2rem", w: 36, h: 36 },
-  { px: 40, rem: "2.5rem", w: 42, h: 42 },
-  { px: 48, rem: "3rem", w: 48, h: 48 },
-  { px: 64, rem: "4rem", w: 54, h: 58 },
-];
-
-const RADIUS_STEPS = [
-  { px: "4px", token: "(xs)", radius: "4px" },
-  { px: "8px", token: "(sm)", radius: "8px" },
-  { px: "12px", token: "(md)", radius: "12px" },
-  { px: "16px", token: "(lg)", radius: "16px" },
-  { px: "24px", token: "(xl)", radius: "24px" },
-  { px: "Full", token: "(circle)", radius: "9999px" },
-];
-
-const SHADOW_STEPS = [
-  {
-    name: "Sm",
-    offset: "0 1px 2px 0",
-    color: "rgba(15, 23, 42, 0.05)",
-    shadow: "0 1px 2px 0 rgba(15, 23, 42, 0.05)",
-  },
-  {
-    name: "Md",
-    offset: "0 4px 12px -2px",
-    color: "rgba(15, 23, 42, 0.08)",
-    shadow: "0 4px 12px -2px rgba(15, 23, 42, 0.08)",
-  },
-  {
-    name: "Lg",
-    offset: "0 12px 24px -4px",
-    color: "rgba(15, 23, 42, 0.10)",
-    shadow: "0 12px 24px -4px rgba(15, 23, 42, 0.10)",
-  },
-  {
-    name: "Xl",
-    offset: "0 20px 40px -8px",
-    color: "rgba(15, 23, 42, 0.12)",
-    shadow: "0 20px 40px -8px rgba(15, 23, 42, 0.12)",
-  },
-];
-
-const ICON_NAMES: VertexIconName[] = [
-  "bell",
-  "search",
-  "play",
-  "document",
-  "bookmark",
-  "chart",
-  "clock",
-  "user",
-  "chevron-right",
-];
-
-/* -------------------------------------------------------------------------- */
-/*                               SECTION HEADER                               */
-/* -------------------------------------------------------------------------- */
-
-function SectionHeader({ num, title }: { num: string; title: string }) {
+function NextjsCourseEmblem() {
   return (
-    <div className="flex items-center gap-2.5 mb-5">
-      <span className="font-sans text-[12px] font-bold tracking-[0.08em] text-[#FB923C]">
-        {num}
+    <div
+      className="relative flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-[14px] bg-[#0B0D11] shadow-[0_2px_6px_rgba(15,23,42,0.16)] overflow-hidden"
+      aria-hidden="true"
+    >
+      <svg
+        width="60"
+        height="60"
+        viewBox="0 0 60 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <radialGradient
+            id="nextjs-card-glow"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientUnits="userSpaceOnUse"
+            gradientTransform="translate(18 14) rotate(50) scale(46)"
+          >
+            <stop offset="0%" stopColor="#272D38" />
+            <stop offset="60%" stopColor="#0D1017" />
+            <stop offset="100%" stopColor="#07080C" />
+          </radialGradient>
+          <linearGradient
+            id="nextjs-n-diag"
+            x1="21"
+            y1="17"
+            x2="45"
+            y2="47"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="72%" stopColor="#FFFFFF" stopOpacity="0.92" />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient
+            id="nextjs-n-right"
+            x1="39.5"
+            y1="17"
+            x2="39.5"
+            y2="41"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.18" />
+          </linearGradient>
+        </defs>
+        <rect width="60" height="60" rx="14" fill="url(#nextjs-card-glow)" />
+        <rect
+          x="0.5"
+          y="0.5"
+          width="59"
+          height="59"
+          rx="13.5"
+          stroke="white"
+          strokeOpacity="0.08"
+        />
+        {/* Left vertical stem */}
+        <path d="M19.5 42V18H23.1V42H19.5Z" fill="#FFFFFF" />
+        {/* Right vertical stem */}
+        <path d="M37.4 18H41V40.5H37.4V18Z" fill="url(#nextjs-n-right)" />
+        {/* Diagonal stroke */}
+        <path
+          d="M22.8 18L44.2 45.2L41.2 47.4L19.8 20.1L22.8 18Z"
+          fill="url(#nextjs-n-diag)"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function DockerCourseEmblem() {
+  return (
+    <div
+      className="flex h-[60px] w-[64px] shrink-0 items-center justify-start"
+      aria-hidden="true"
+    >
+      <svg
+        width="64"
+        height="54"
+        viewBox="0 0 64 54"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Top row container */}
+        <rect
+          x="24"
+          y="7"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        {/* Middle row containers */}
+        <rect
+          x="16.5"
+          y="13.8"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#38A3F5"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="24"
+          y="13.8"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="31.5"
+          y="13.8"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#38A3F5"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        {/* Bottom row containers */}
+        <rect
+          x="9"
+          y="20.6"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="16.5"
+          y="20.6"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#52B0F8"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="24"
+          y="20.6"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="31.5"
+          y="20.6"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#52B0F8"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        <rect
+          x="39"
+          y="20.6"
+          width="6.5"
+          height="5.8"
+          rx="0.8"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.2"
+        />
+        {/* Container vertical vents */}
+        <line x1="27.2" y1="8.3" x2="27.2" y2="11.5" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="19.7" y1="15.1" x2="19.7" y2="18.3" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="27.2" y1="15.1" x2="27.2" y2="18.3" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="34.7" y1="15.1" x2="34.7" y2="18.3" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="12.2" y1="21.9" x2="12.2" y2="25.1" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="19.7" y1="21.9" x2="19.7" y2="25.1" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="27.2" y1="21.9" x2="27.2" y2="25.1" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="34.7" y1="21.9" x2="34.7" y2="25.1" stroke="#0F2942" strokeWidth="0.9" />
+        <line x1="42.2" y1="21.9" x2="42.2" y2="25.1" stroke="#0F2942" strokeWidth="0.9" />
+        {/* Whale body */}
+        <path
+          d="M57.8 23.2C56.2 22.1 52.8 21.8 50.2 22.6C49.8 19.6 47.9 17.2 45.6 15.8C44.9 17.7 44.8 20.3 45.9 22.4C44.4 23.2 42.1 23.7 39.6 23.7H5.5C4.5 29.8 6.4 36.6 11.4 40.9C16.2 45 23.3 46.5 31.6 46.2C42.9 45.8 50.8 40.1 54.6 30.2C57.4 30.4 60.3 29.5 61.9 27.1C60.6 26.2 59.1 25.8 57.5 26C58.2 25 58.3 24 57.8 23.2Z"
+          fill="#2496ED"
+          stroke="#0F2942"
+          strokeWidth="1.35"
+          strokeLinejoin="round"
+        />
+        {/* Whale underbelly highlight */}
+        <path
+          d="M11.6 40.8C16.3 44.8 23.2 46.3 31.5 46C37.5 45.8 42.7 44.1 46.7 41.2C39.2 42.6 28.4 42.8 18.8 39.2C15.9 38.1 13.4 38.9 11.6 40.8Z"
+          fill="#BCE2FC"
+        />
+        {/* Whale eye */}
+        <circle cx="20.5" cy="34.8" r="1.7" fill="#FFFFFF" stroke="#0F2942" strokeWidth="1" />
+        <circle cx="20.8" cy="34.8" r="0.7" fill="#0F2942" />
+      </svg>
+    </div>
+  );
+}
+
+function TypeScriptCourseEmblem() {
+  return (
+    <div
+      className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-b from-[#3B82D6] to-[#2B6CB8] shadow-[0_2px_6px_rgba(37,99,235,0.20)]"
+      aria-hidden="true"
+    >
+      <span className="font-sans text-[28px] leading-none font-bold tracking-[-0.03em] text-white select-none translate-y-[1px]">
+        TS
       </span>
-      <h2 className="font-sans text-[12px] font-bold tracking-[0.1em] text-[#0F172A] uppercase">
-        {title}
-      </h2>
     </div>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                 MAIN PAGE                                  */
+/*                                USER AVATAR                                 */
 /* -------------------------------------------------------------------------- */
 
-export default function DesignSystemPage() {
+function UserAvatar() {
   return (
-    <main className="min-h-screen bg-[#FAF8F6] text-[#0F172A] py-5 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1360px] space-y-4">
-        {/* ================================================================ */}
-        {/* ROW 1: BRAND INTRO + 01 COLORS                                   */}
-        {/* ================================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Brand Cover Panel */}
-          <section
-            aria-label="Design System Overview"
-            className="lg:col-span-4 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <div>
-              <VertexLogo size="lg" />
-              <h1 className="mt-6 font-display text-[44px] sm:text-[50px] leading-[1.12] font-bold tracking-[-0.02em] text-[#0F172A]">
-                Design System
-              </h1>
-              <p className="mt-5 text-[15px] leading-[25px] text-[#475569] max-w-[34ch]">
-                A unified design language for Vertex learning platform. Clean,
-                modern and focused on clarity, consistency and intuitive
-                learning experiences.
-              </p>
-            </div>
+    <button
+      type="button"
+      aria-label="Open user profile menu"
+      className="relative inline-flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border border-[#E6DFD7] bg-[#EADFD5] overflow-hidden shadow-2xs transition-transform hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F97316]"
+    >
+      <svg
+        width="38"
+        height="38"
+        viewBox="0 0 38 38"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="avatar-bg" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#EFECE8" />
+            <stop offset="100%" stopColor="#DDD5CC" />
+          </linearGradient>
+          <linearGradient id="hair-grad" x1="12" y1="6" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#3B2316" />
+            <stop offset="100%" stopColor="#1E110A" />
+          </linearGradient>
+          <linearGradient id="skin-grad" x1="15" y1="10" x2="23" y2="25" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F2C6A8" />
+            <stop offset="100%" stopColor="#DDA482" />
+          </linearGradient>
+        </defs>
+        <rect width="38" height="38" fill="url(#avatar-bg)" />
+        {/* Back hair */}
+        <path
+          d="M10.5 20C10.5 11.5 14.2 6.8 19.3 6.8C24.5 6.8 28 11.4 28.4 20.2C28.7 25.5 27.6 30.5 26.5 33H11.8C10.8 30 10.5 25 10.5 20Z"
+          fill="url(#hair-grad)"
+        />
+        {/* Shoulders / dark top */}
+        <path
+          d="M6.5 38C7.8 31.8 12.6 28.8 19 28.8C25.4 28.8 30.2 31.8 31.5 38H6.5Z"
+          fill="#1B1918"
+        />
+        {/* V-neck skin */}
+        <path d="M15.8 27.2H22.2L21.5 31.5L19 33.8L16.5 31.5L15.8 27.2Z" fill="#E2AC8B" />
+        {/* Head */}
+        <ellipse cx="19" cy="17.6" rx="5.5" ry="6.8" fill="url(#skin-grad)" />
+        {/* Front hair parting */}
+        <path
+          d="M13.3 16.5C13.8 11.6 16.6 9.8 19.6 10.2C22.4 10.5 24.4 12.8 24.9 17.5C23.5 14.5 21.8 12.6 19.5 12.2C17.1 12.9 14.8 14.4 13.3 16.5Z"
+          fill="url(#hair-grad)"
+        />
+        {/* Eyes & brow hints */}
+        <path d="M16.2 16.3C16.8 16 17.5 16 18 16.3" stroke="#3B2316" strokeWidth="0.75" strokeLinecap="round" />
+        <path d="M20.1 16.3C20.6 16 21.3 16 21.9 16.3" stroke="#3B2316" strokeWidth="0.75" strokeLinecap="round" />
+        <circle cx="17.1" cy="17.5" r="0.65" fill="#261710" />
+        <circle cx="20.9" cy="17.5" r="0.65" fill="#261710" />
+        {/* Subtle smile */}
+        <path
+          d="M17.4 21.1C18.2 21.7 19.8 21.7 20.6 21.1"
+          stroke="#B56E52"
+          strokeWidth="0.85"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
+}
 
-            <div className="mt-10 pt-4">
-              <p className="font-sans text-[11.5px] font-semibold tracking-[0.12em] text-[#64748B] uppercase">
-                VERSION 1.0 &nbsp;•&nbsp; MAY 2025
-              </p>
-            </div>
-          </section>
+/* -------------------------------------------------------------------------- */
+/*                                COURSE DATA                                 */
+/* -------------------------------------------------------------------------- */
 
-          {/* 01 COLORS */}
-          <section
-            aria-label="01 Colors"
-            className="lg:col-span-8 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8"
-          >
-            <SectionHeader num="01" title="COLORS" />
+interface HomeCourse {
+  slug: string;
+  title: string;
+  description: string;
+  level: "Beginner" | "Intermediate";
+  duration: string;
+  modules: string;
+  emblem: React.ReactNode;
+}
 
-            {/* Primary Swatches */}
-            <div>
-              <h3 className="text-[13.5px] font-semibold text-[#0F172A] mb-3">
-                Primary
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 max-w-[740px]">
-                {PRIMARY_COLORS.map((swatch) => (
-                  <div key={swatch.name} className="space-y-2">
-                    <div
-                      className={`h-[68px] w-full rounded-[12px] ${
-                        swatch.bordered ? "border border-[#F3E3D8]" : ""
-                      }`}
-                      style={{ backgroundColor: swatch.hex }}
-                    />
-                    <div>
-                      <p className="text-[12.5px] font-medium text-[#0F172A]">
-                        {swatch.name}
-                      </p>
-                      <p className="text-[11.5px] text-[#64748B] font-sans">
-                        {swatch.hex}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+const FEATURED_COURSES: HomeCourse[] = [
+  {
+    slug: "nextjs-for-production",
+    title: "Next.js for Production",
+    description:
+      "Build scalable, high-performance web applications with Next.js.",
+    level: "Intermediate",
+    duration: "18h 24m",
+    modules: "12 modules",
+    emblem: <NextjsCourseEmblem />,
+  },
+  {
+    slug: "docker-essentials",
+    title: "Docker Essentials",
+    description:
+      "Containerize applications and streamline your development workflow.",
+    level: "Beginner",
+    duration: "10h 12m",
+    modules: "8 modules",
+    emblem: <DockerCourseEmblem />,
+  },
+  {
+    slug: "typescript-deep-dive",
+    title: "TypeScript Deep Dive",
+    description:
+      "Go beyond the basics and write safer, more expressive code.",
+    level: "Intermediate",
+    duration: "14h 36m",
+    modules: "10 modules",
+    emblem: <TypeScriptCourseEmblem />,
+  },
+];
 
-            {/* Neutral Swatches */}
-            <div className="mt-6">
-              <h3 className="text-[13.5px] font-semibold text-[#0F172A] mb-3">
-                Neutral
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3.5">
-                {NEUTRAL_COLORS.map((swatch) => (
-                  <div key={swatch.name} className="space-y-2">
-                    <div
-                      className={`h-[52px] w-full rounded-[10px] ${
-                        swatch.bordered ? "border border-[#E2E8F0]" : ""
-                      }`}
-                      style={{ backgroundColor: swatch.hex }}
-                    />
-                    <div>
-                      <p className="text-[12px] font-medium text-[#0F172A] whitespace-nowrap">
-                        {swatch.name}
-                      </p>
-                      <p className="text-[11px] text-[#64748B] font-sans">
-                        {swatch.hex}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
+function LevelBarsIcon({ level }: { level: "Beginner" | "Intermediate" }) {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 14 14"
+      fill="none"
+      className="shrink-0 text-[#64748B]"
+      aria-hidden="true"
+    >
+      <rect x="1.5" y="8.5" width="2.2" height="4" rx="0.6" fill="currentColor" />
+      <rect
+        x="5.5"
+        y="5.5"
+        width="2.2"
+        height="7"
+        rx="0.6"
+        fill="currentColor"
+        fillOpacity={level === "Beginner" ? "0.45" : "1"}
+      />
+      <rect
+        x="9.5"
+        y="2.5"
+        width="2.2"
+        height="10"
+        rx="0.6"
+        fill="currentColor"
+        fillOpacity="0.45"
+      />
+    </svg>
+  );
+}
 
-        {/* ================================================================ */}
-        {/* ROW 2: 02 TYPOGRAPHY + 03 TYPE SCALE                             */}
-        {/* ================================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* 02 TYPOGRAPHY */}
-          <section
-            aria-label="02 Typography"
-            className="lg:col-span-5 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <SectionHeader num="02" title="TYPOGRAPHY" />
+/* -------------------------------------------------------------------------- */
+/*                           DECORATIVE FOOTER BARS                           */
+/* -------------------------------------------------------------------------- */
 
-            <div className="my-auto space-y-10 py-2">
-              {/* Playfair Display Specimen */}
-              <div className="flex items-center gap-7">
-                <div className="w-[88px] shrink-0 text-center font-display text-[56px] leading-none font-bold text-[#0F172A]">
-                  Ag
-                </div>
-                <div>
-                  <h3 className="font-display text-[22px] leading-[28px] font-bold text-[#0F172A]">
-                    Playfair Display
-                  </h3>
-                  <p className="mt-1.5 text-[13.5px] text-[#64748B]">
-                    Elegant{" "}
-                    <span className="text-[#FB923C] mx-1">•</span> Readable{" "}
-                    <span className="text-[#FB923C] mx-1">•</span> Timeless
-                  </p>
-                </div>
-              </div>
+const LEFT_SKYLINE_BARS = [
+  { left: "0%", width: "9.5%", height: "42%", opacity: 0.55 },
+  { left: "7.4%", width: "8.8%", height: "60%", opacity: 0.72 },
+  { left: "13.6%", width: "9.2%", height: "80%", opacity: 0.85 },
+  { left: "18.2%", width: "9.6%", height: "100%", opacity: 0.92 },
+  { left: "25.4%", width: "9.4%", height: "74%", opacity: 0.8 },
+  { left: "31.2%", width: "8.6%", height: "50%", opacity: 0.58 },
+];
 
-              {/* Inter Specimen */}
-              <div className="flex items-center gap-7">
-                <div className="w-[88px] shrink-0 text-center font-sans text-[56px] leading-none font-bold text-[#0F172A]">
-                  Ag
-                </div>
-                <div>
-                  <h3 className="font-sans text-[22px] leading-[28px] font-semibold text-[#0F172A]">
-                    Inter
-                  </h3>
-                  <p className="mt-1.5 text-[13.5px] text-[#64748B]">
-                    Clean{" "}
-                    <span className="text-[#FB923C] mx-1">•</span> Modern{" "}
-                    <span className="text-[#FB923C] mx-1">•</span> Highly legible
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+const RIGHT_SKYLINE_BARS = [
+  { left: "51.5%", width: "9.2%", height: "38%", opacity: 0.48 },
+  { left: "60.4%", width: "9.4%", height: "58%", opacity: 0.72 },
+  { left: "68.2%", width: "9.2%", height: "74%", opacity: 0.86 },
+  { left: "73.8%", width: "9.6%", height: "100%", opacity: 0.9 },
+  { left: "82.6%", width: "9.4%", height: "64%", opacity: 0.76 },
+  { left: "89.4%", width: "10.6%", height: "90%", opacity: 0.88 },
+];
 
-          {/* 03 TYPE SCALE */}
-          <section
-            aria-label="03 Type Scale"
-            className="lg:col-span-7 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8"
-          >
-            <SectionHeader num="03" title="TYPE SCALE" />
+/* -------------------------------------------------------------------------- */
+/*                               HOMEPAGE VIEW                                */
+/* -------------------------------------------------------------------------- */
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[540px]">
-                <thead>
-                  <tr className="text-[12px] font-medium text-[#64748B]">
-                    <th className="pb-3 font-medium w-[26%]">Style</th>
-                    <th className="pb-3 font-medium w-[24%]">Font</th>
-                    <th className="pb-3 font-medium w-[17%]">Size / Line Height</th>
-                    <th className="pb-3 font-medium w-[16%]">Weight</th>
-                    <th className="pb-3 font-medium w-[17%]">Use</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#F8FAFC]">
-                  {TYPE_SCALE.map((row) => (
-                    <tr key={row.style} className="align-middle">
-                      <td className={`py-2 ${row.previewClass}`}>{row.style}</td>
-                      <td className="py-2 text-[12.5px] text-[#64748B]">
-                        {row.font}
-                      </td>
-                      <td className="py-2 text-[12.5px] text-[#475569] tabular-nums">
-                        {row.size}
-                      </td>
-                      <td className="py-2 text-[12.5px] text-[#64748B]">
-                        {row.weight}
-                      </td>
-                      <td className="py-2 text-[12.5px] text-[#64748B]">
-                        {row.use}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
+export default function VertexHomePage() {
+  const stripeBg = {
+    backgroundImage:
+      "repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(218, 206, 194, 0.34) 6px, rgba(218, 206, 194, 0.34) 7px)",
+  };
 
-        {/* ================================================================ */}
-        {/* ROW 3: 04 SPACING SYSTEM + 05 RADIUS & SHADOWS                   */}
-        {/* ================================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* 04 SPACING SYSTEM */}
-          <section
-            aria-label="04 Spacing System"
-            className="lg:col-span-6 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <div>
-              <SectionHeader num="04" title="SPACING SYSTEM" />
-              <p className="text-[13.5px] font-medium text-[#334155]">
-                Base unit: 4px
-              </p>
-            </div>
+  return (
+    <div className="min-h-screen bg-[#FAF8F5] text-[#0F172A] flex justify-center selection:bg-[#FFEEE5] selection:text-[#0F172A]">
+      {/* Left Diagonal Hatch Gutter */}
+      <div
+        aria-hidden="true"
+        className="hidden sm:block w-5 md:w-7 lg:w-8 shrink-0 border-r border-[#EFE9E2]"
+        style={stripeBg}
+      />
 
-            <div className="mt-8 pt-4 grid grid-cols-3 sm:grid-cols-9 gap-3 items-end">
-              {SPACING_STEPS.map((step) => (
-                <div
-                  key={step.px}
-                  className="flex flex-col items-center text-center"
+      {/* Main Framed Canvas */}
+      <div className="relative flex-1 w-full max-w-[1440px] min-w-0 flex flex-col justify-between overflow-hidden bg-[#FAF8F5]">
+        <div>
+          {/* ============================================================== */}
+          {/* TOP NAVBAR                                                     */}
+          {/* ============================================================== */}
+          <header className="border-b border-[#EFE9E2]">
+            <div className="mx-auto flex h-[76px] items-center justify-between px-5 sm:px-9 lg:px-11">
+              <div className="flex items-center gap-8 sm:gap-11">
+                <Link
+                  href="/"
+                  aria-label="Vertex Home"
+                  className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F97316] rounded-sm"
                 >
-                  <div className="h-[68px] flex items-end justify-center mb-3">
-                    <div
-                      className="rounded-[5px] bg-[#FED7AA]/75 border border-[#FDBA74]/50"
-                      style={{ width: `${step.w}px`, height: `${step.h}px` }}
-                    />
-                  </div>
-                  <span className="text-[12.5px] font-semibold text-[#0F172A] tabular-nums">
-                    {step.px}
-                  </span>
-                  <span className="mt-0.5 text-[11px] text-[#64748B] tabular-nums">
-                    ({step.rem})
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
+                  <VertexLogo size="md" />
+                </Link>
 
-          {/* 05 RADIUS & SHADOWS */}
-          <section
-            aria-label="05 Radius and Shadows"
-            className="lg:col-span-6 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8"
-          >
-            <SectionHeader num="05" title="RADIUS & SHADOWS" />
-
-            {/* Radius */}
-            <div>
-              <h3 className="text-[13.5px] font-semibold text-[#0F172A] mb-3.5">
-                Radius
-              </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-                {RADIUS_STEPS.map((r) => (
-                  <div
-                    key={r.px}
-                    className="flex flex-col items-center text-center"
+                <nav aria-label="Primary" className="flex items-center gap-6 sm:gap-9">
+                  <Link
+                    href="#all-courses"
+                    className="text-[14.5px] font-normal text-[#1E293B] hover:text-[#EA580C] transition-colors"
                   >
-                    <div
-                      className="h-[46px] w-[46px] border border-[#E2E8F0] bg-[#FAFAFC]"
-                      style={{ borderRadius: r.radius }}
-                    />
-                    <span className="mt-2 text-[12px] font-medium text-[#0F172A]">
-                      {r.px}
-                    </span>
-                    <span className="text-[11px] text-[#64748B]">{r.token}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Shadows */}
-            <div className="mt-6">
-              <h3 className="text-[13.5px] font-semibold text-[#0F172A] mb-3.5">
-                Shadows
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-                {SHADOW_STEPS.map((s) => (
-                  <div
-                    key={s.name}
-                    className="rounded-[12px] border border-[#F1F5F9] bg-white p-3.5"
-                    style={{ boxShadow: s.shadow }}
+                    Courses
+                  </Link>
+                  <Link
+                    href="#my-learning"
+                    className="text-[14.5px] font-normal text-[#1E293B] hover:text-[#EA580C] transition-colors"
                   >
-                    <p className="text-[13.5px] font-semibold text-[#0F172A]">
-                      {s.name}
-                    </p>
-                    <p className="mt-1.5 text-[10.5px] leading-[15px] text-[#64748B] tabular-nums">
-                      {s.offset}
-                    </p>
-                    <p className="text-[10.5px] leading-[15px] text-[#64748B] tabular-nums">
-                      {s.color}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* ================================================================ */}
-        {/* ROW 4: 06 ICONS + 07 BUTTONS + 08 INPUTS                         */}
-        {/* ================================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* 06 ICONS */}
-          <section
-            aria-label="06 Icons"
-            className="lg:col-span-4 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <div>
-              <SectionHeader num="06" title="ICONS" />
-
-              {/* Outline Style */}
-              <div>
-                <h3 className="text-[12.5px] font-medium text-[#334155] mb-3">
-                  Outline Style
-                </h3>
-                <div className="flex items-center justify-between gap-2 text-[#1E293B]">
-                  {ICON_NAMES.map((name) => (
-                    <span
-                      key={`outline-${name}`}
-                      className="inline-flex h-7 w-7 items-center justify-center"
-                    >
-                      <VertexIcon name={name} variant="outline" size={20} />
-                    </span>
-                  ))}
-                </div>
+                    My Learning
+                  </Link>
+                </nav>
               </div>
 
-              {/* Filled Style (labeled Fileed Style on reference sheet) */}
-              <div className="mt-6">
-                <h3 className="text-[12.5px] font-medium text-[#334155] mb-3">
-                  Fileed Style
-                </h3>
-                <div className="flex items-center justify-between gap-2 text-[#0F172A]">
-                  {ICON_NAMES.map((name) => (
-                    <span
-                      key={`filled-${name}`}
-                      className="inline-flex h-7 w-7 items-center justify-center"
-                    >
-                      <VertexIcon name={name} variant="filled" size={20} />
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center gap-4 sm:gap-5">
+                <button
+                  type="button"
+                  aria-label="Notifications"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#334155] hover:bg-[#F2ECE6] hover:text-[#0F172A] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F97316]"
+                >
+                  <Bell size={19} strokeWidth={1.75} />
+                </button>
+                <UserAvatar />
               </div>
             </div>
+          </header>
 
-            {/* Icon Specs */}
-            <div className="mt-7 pt-5 border-t border-[#F8FAFC]">
-              <h4 className="text-[12.5px] font-semibold text-[#0F172A] mb-2">
-                Icon Specs
-              </h4>
-              <ul className="space-y-1.5 text-[12px] text-[#64748B]">
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  24x24px grid
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  2px stroke width (outline)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Rounded line caps
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Consistent optical balance
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          {/* 07 BUTTONS */}
-          <section
-            aria-label="07 Buttons"
-            className="lg:col-span-5 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <div>
-              <SectionHeader num="07" title="BUTTONS" />
-
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse min-w-[460px]">
-                  <thead>
-                    <tr className="text-[12px] font-medium text-[#64748B] text-left">
-                      <th className="pb-3 font-medium w-[64px]" />
-                      <th className="pb-3 font-medium px-1.5">Primary</th>
-                      <th className="pb-3 font-medium px-1.5">Secondary</th>
-                      <th className="pb-3 font-medium px-1.5">Tertiary</th>
-                      <th className="pb-3 font-medium pl-1.5">Text</th>
-                    </tr>
-                  </thead>
-                  <tbody className="space-y-3">
-                    {(["default", "hover", "disabled"] as const).map((state) => (
-                      <tr key={state} className="align-middle">
-                        <td className="py-2 pr-2 text-[12px] font-medium text-[#334155] capitalize">
-                          {state}
-                        </td>
-                        <td className="py-2 px-1.5">
-                          <Button variant="primary" visualState={state}>
-                            Get Started
-                          </Button>
-                        </td>
-                        <td className="py-2 px-1.5">
-                          <Button variant="secondary" visualState={state}>
-                            Explore Courses
-                          </Button>
-                        </td>
-                        <td className="py-2 px-1.5">
-                          <Button variant="tertiary" visualState={state}>
-                            <span>View Lesson</span>
-                            <ExternalLink size={13} strokeWidth={2} />
-                          </Button>
-                        </td>
-                        <td className="py-2 pl-1.5">
-                          <Button variant="text" visualState={state}>
-                            <span>Watch Video</span>
-                            <CirclePlay size={14} strokeWidth={2} />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Button Specs */}
-            <div className="mt-5 pt-4 border-t border-[#F8FAFC]">
-              <h4 className="text-[12.5px] font-semibold text-[#0F172A] mb-2">
-                Button Specs
-              </h4>
-              <ul className="space-y-1.5 text-[12px] text-[#64748B]">
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Height: 44px (default)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Padding: 0 16px (lg), 0 12px (md)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Radius: 12px
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Font: Inter Medium (14–16px)
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          {/* 08 INPUTS */}
-          <section
-            aria-label="08 Inputs"
-            className="lg:col-span-3 rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 flex flex-col justify-between"
-          >
-            <div>
-              <SectionHeader num="08" title="INPUTS" />
-
-              <div className="space-y-5">
-                <div>
-                  <label className="block text-[12.5px] font-medium text-[#334155] mb-2">
-                    Search / Text Input
-                  </label>
-                  <SearchInput />
+          {/* ============================================================== */}
+          {/* HERO SECTION                                                   */}
+          {/* ============================================================== */}
+          <main>
+            <section
+              aria-labelledby="hero-heading"
+              className="border-b border-[#EFE9E2] px-5 sm:px-9 lg:px-11 pt-12 sm:pt-[62px] pb-12 sm:pb-[64px]"
+            >
+              <div className="mx-auto max-w-[744px] flex flex-col items-center text-center">
+                {/* Eyebrow Badge */}
+                <div className="inline-flex items-center justify-center rounded-[10px] border border-[#F4DFCE] bg-[#FCF6F0] px-4 py-1.5 shadow-[0_1px_2px_rgba(234,88,12,0.04)]">
+                  <span className="font-sans text-[11px] leading-[14px] font-semibold tracking-[0.11em] uppercase text-[#E06331]">
+                    INTELLIGENT LEARNING
+                  </span>
                 </div>
 
-                <div>
-                  <label className="block text-[12.5px] font-medium text-[#334155] mb-2">
-                    Select
-                  </label>
-                  <SelectInput />
-                </div>
-              </div>
-            </div>
+                {/* Main Display Title */}
+                <h1
+                  id="hero-heading"
+                  className="mt-6 font-display text-[40px] sm:text-[54px] md:text-[62px] leading-[1.09] font-bold tracking-[-0.02em] text-[#0B0F17]"
+                >
+                  Search your learning
+                  <br />
+                  in plain English.
+                </h1>
 
-            {/* Field Specs */}
-            <div className="mt-6 pt-4 border-t border-[#F8FAFC]">
-              <h4 className="text-[12.5px] font-semibold text-[#0F172A] mb-2">
-                Field Specs
-              </h4>
-              <ul className="space-y-1.5 text-[12px] text-[#64748B]">
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Height: 44px
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Radius: 12px
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Border: 1px solid #E2E8F0
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Padding: 0 16px
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-[#94A3B8]" />
-                  Focus: Border color #FB923C
-                </li>
-              </ul>
-            </div>
-          </section>
-        </div>
-
-        {/* ================================================================ */}
-        {/* ROW 5: 09 BADGES / TAGS + 10 STATUS / INDICATORS + 11 PROGRESS   */}
-        {/* ================================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* 09 BADGES / TAGS */}
-          <section
-            aria-label="09 Badges and Tags"
-            className="lg:col-span-4 rounded-[20px] border border-[#F1EDE8] bg-white p-6 sm:p-7"
-          >
-            <SectionHeader num="09" title="BADGES / TAGS" />
-            <div className="grid grid-cols-3 gap-4 pt-1">
-              <div className="space-y-2">
-                <p className="text-[12px] font-medium text-[#334155]">Video</p>
-                <Badge variant="video" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-[12px] font-medium text-[#334155]">Lesson</p>
-                <Badge variant="lesson" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-[12px] font-medium text-[#334155]">Popular</p>
-                <Badge variant="popular" />
-              </div>
-            </div>
-          </section>
-
-          {/* 10 STATUS / INDICATORS */}
-          <section
-            aria-label="10 Status and Indicators"
-            className="lg:col-span-4 rounded-[20px] border border-[#F1EDE8] bg-white p-6 sm:p-7 flex flex-col justify-between"
-          >
-            <SectionHeader num="10" title="STATUS / INDICATORS" />
-            <div className="flex flex-wrap items-center justify-between gap-3 py-2">
-              <StatusIndicator status="in-progress" />
-              <StatusIndicator status="completed" />
-              <StatusIndicator status="now-playing" />
-              <StatusIndicator status="locked" />
-            </div>
-          </section>
-
-          {/* 11 PROGRESS BAR */}
-          <section
-            aria-label="11 Progress Bar"
-            className="lg:col-span-4 rounded-[20px] border border-[#F1EDE8] bg-white p-6 sm:p-7 flex flex-col justify-between"
-          >
-            <SectionHeader num="11" title="PROGRESS BAR" />
-            <div className="py-2.5">
-              <ProgressBar percentage={35} />
-            </div>
-          </section>
-        </div>
-
-        {/* ================================================================ */}
-        {/* ROW 6: 12 CARDS                                                  */}
-        {/* ================================================================ */}
-        <section
-          aria-label="12 Cards"
-          className="rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8"
-        >
-          <SectionHeader num="12" title="CARDS" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-            <div className="flex flex-col">
-              <p className="text-[12px] font-medium text-[#64748B] mb-2.5">
-                Course Card
-              </p>
-              <CourseCardPreview />
-            </div>
-
-            <div className="flex flex-col">
-              <p className="text-[12px] font-medium text-[#64748B] mb-2.5">
-                Lesson Card (Video)
-              </p>
-              <VideoLessonCardPreview />
-            </div>
-
-            <div className="flex flex-col">
-              <p className="text-[12px] font-medium text-[#64748B] mb-2.5">
-                Lesson Card (Lesson)
-              </p>
-              <LessonCardPreview />
-            </div>
-
-            <div className="flex flex-col">
-              <p className="text-[12px] font-medium text-[#64748B] mb-2.5">
-                Resource Card
-              </p>
-              <ResourceCardPreview />
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* ROW 7: 13 NAVIGATION + 14 PRINCIPLES                             */}
-        {/* ================================================================ */}
-        <section
-          aria-label="13 Navigation and 14 Principles"
-          className="rounded-[20px] border border-[#F1EDE8] bg-white p-7 sm:p-8 space-y-7"
-        >
-          {/* 13 NAVIGATION */}
-          <div>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
-              <div className="lg:col-span-4">
-                <SectionHeader num="13" title="NAVIGATION" />
-                <div className="pt-1">
-                  <BrandNavbarPreview />
-                </div>
-              </div>
-
-              <div className="lg:col-span-5">
-                <p className="text-[12px] font-medium text-[#64748B] mb-2.5">
-                  Breadcrumbs
+                {/* Subtitle */}
+                <p className="mt-5 font-sans text-[15.5px] sm:text-[17.5px] leading-[1.6] font-normal text-[#5B6678] max-w-[46ch]">
+                  Vertex understands what you want to learn and
+                  <br className="hidden sm:inline" /> finds the exact lessons
+                  across all your courses.
                 </p>
-                <BreadcrumbsPreview />
+
+                {/* Primary CTA Button */}
+                <div className="mt-8">
+                  <Link
+                    href="#all-courses"
+                    className="inline-flex items-center justify-center gap-3 h-[48px] px-6 rounded-[12px] bg-gradient-to-b from-[#EB7347] to-[#DF5E30] text-white font-sans text-[15px] font-medium shadow-[0_6px_16px_-3px_rgba(223,94,48,0.38),inset_0_1px_0_rgba(255,255,255,0.22)] hover:from-[#E5673B] hover:to-[#D15224] transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA580C]"
+                  >
+                    <span>Explore Courses</span>
+                    <ArrowRight size={17} strokeWidth={1.9} aria-hidden="true" />
+                  </Link>
+                </div>
+
+                {/* Hero Search Input Box */}
+                <form
+                  action="#all-courses"
+                  method="GET"
+                  role="search"
+                  className="mt-10 sm:mt-11 w-full"
+                >
+                  <label
+                    htmlFor="vertex-hero-search"
+                    className="relative flex items-center w-full h-[64px] rounded-[16px] border border-[#EAE4DC] bg-[#FDFCFA] px-5 sm:px-6 shadow-[0_3px_12px_rgba(15,23,42,0.03)] transition-colors focus-within:border-[#FB923C] focus-within:bg-white cursor-text"
+                  >
+                    <Search
+                      size={21}
+                      strokeWidth={1.85}
+                      className="text-[#334155] shrink-0 mr-3.5"
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="vertex-hero-search"
+                      name="q"
+                      type="search"
+                      placeholder="Ask anything about your learning..."
+                      aria-label="Ask anything about your learning"
+                      className="w-full bg-transparent font-sans text-[15.5px] sm:text-[16.5px] text-[#0F172A] placeholder:text-[#8E96A4] focus:outline-none"
+                    />
+                    <kbd className="ml-3 inline-flex items-center justify-center h-[34px] min-w-[60px] rounded-[8px] border border-[#EAE4DC] bg-[#FAF8F5] px-2.5 font-sans text-[13.5px] font-medium text-[#334155] shrink-0 select-none">
+                      ⌘ K
+                    </kbd>
+                  </label>
+                </form>
               </div>
+            </section>
 
-              <div className="lg:col-span-3">
-                <p className="text-[12px] font-medium text-[#64748B] mb-2">
-                  Pagination
-                </p>
-                <PaginationPreview />
-              </div>
-            </div>
-          </div>
-
-          <hr className="border-[#F1EDE8]" />
-
-          {/* 14 PRINCIPLES */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-2.5">
-                <span className="font-sans text-[12px] font-bold tracking-[0.08em] text-[#FB923C]">
-                  14
-                </span>
-                <h2 className="font-sans text-[12px] font-bold tracking-[0.1em] text-[#0F172A] uppercase">
-                  PRINCIPLES
+            {/* ============================================================== */}
+            {/* ALL COURSES SECTION                                            */}
+            {/* ============================================================== */}
+            <section
+              id="all-courses"
+              aria-labelledby="all-courses-heading"
+              className="px-5 sm:px-9 lg:px-11 pt-11 sm:pt-12 pb-8"
+            >
+              {/* Section Header Row */}
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <h2
+                  id="all-courses-heading"
+                  className="font-display text-[25px] sm:text-[27px] leading-[1.2] font-bold tracking-[-0.015em] text-[#0F172A]"
+                >
+                  All Courses
                 </h2>
-              </div>
-            </div>
 
-            <div className="lg:col-span-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-              {PRINCIPLES_LIST.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <div key={item.title} className="flex items-start gap-3.5">
-                    <div className="mt-0.5 text-[#334155] shrink-0">
-                      <IconComponent size={22} strokeWidth={1.75} />
-                    </div>
+                <Link
+                  href="#all-courses"
+                  className="inline-flex items-center gap-2 font-sans text-[14.5px] font-medium text-[#E06331] hover:text-[#C2410C] transition-colors"
+                >
+                  <span>View all courses</span>
+                  <ArrowRight size={15} strokeWidth={2} aria-hidden="true" />
+                </Link>
+              </div>
+
+              {/* 3-Column Course Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+                {FEATURED_COURSES.map((course) => (
+                  <article
+                    key={course.slug}
+                    className="group relative flex flex-col justify-between rounded-[18px] border border-[#EAE4DC] bg-[#FDFCFA] p-6 sm:p-[26px] min-h-[296px] shadow-[0_2px_8px_rgba(15,23,42,0.02)] hover:border-[#DFD6CA] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.06)] transition-all"
+                  >
                     <div>
-                      <h3 className="text-[13.5px] font-semibold text-[#0F172A]">
-                        {item.title}
+                      {/* Course Emblem */}
+                      <div className="mb-6">{course.emblem}</div>
+
+                      {/* Course Title */}
+                      <h3 className="font-display text-[20px] sm:text-[21px] leading-[1.28] font-bold tracking-[-0.01em] text-[#0F172A] group-hover:text-[#DF5E30] transition-colors">
+                        <Link
+                          href={`#course-${course.slug}`}
+                          className="after:absolute after:inset-0 focus:outline-none"
+                        >
+                          {course.title}
+                        </Link>
                       </h3>
-                      <p className="mt-0.5 text-[12px] leading-[17px] text-[#64748B]">
-                        {item.description}
+
+                      {/* Course Description */}
+                      <p className="mt-2.5 font-sans text-[14px] leading-[1.55] text-[#5B6678]">
+                        {course.description}
                       </p>
                     </div>
-                  </div>
-                );
-              })}
+
+                    {/* Card Footer Metadata */}
+                    <div className="mt-8 pt-4 border-t border-[#EFE9E2] flex items-center justify-between gap-2 font-sans text-[11.5px] text-[#5B6678]">
+                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                        <LevelBarsIcon level={course.level} />
+                        <span>{course.level}</span>
+                      </span>
+
+                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums">
+                        <Clock
+                          size={13}
+                          strokeWidth={1.85}
+                          className="text-[#64748B] shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span>{course.duration}</span>
+                      </span>
+
+                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums">
+                        <FileText
+                          size={13}
+                          strokeWidth={1.85}
+                          className="text-[#64748B] shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span>{course.modules}</span>
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </main>
+        </div>
+
+        {/* ================================================================ */}
+        {/* FOOTER CALLOUT & DECORATIVE SKYLINE                              */}
+        {/* ================================================================ */}
+        <footer className="relative pt-4">
+          {/* Callout Line with Star */}
+          <div className="px-5 sm:px-9 lg:px-11 flex items-center gap-5">
+            <div className="h-px flex-1 bg-[#EFE9E2]" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2.5 text-center">
+              <Star
+                size={19}
+                strokeWidth={1.75}
+                className="text-[#EA6A38] shrink-0"
+                aria-hidden="true"
+              />
+              <span className="font-sans text-[14.5px] sm:text-[15.5px] font-normal text-[#475569]">
+                New courses and lessons added every week.
+              </span>
             </div>
+            <div className="h-px flex-1 bg-[#EFE9E2]" aria-hidden="true" />
           </div>
-        </section>
+
+          {/* Decorative Bottom Stepped Gradient Columns */}
+          <div
+            aria-hidden="true"
+            className="relative mt-6 h-[150px] sm:h-[188px] w-full overflow-hidden pointer-events-none select-none"
+          >
+            {/* Soft ambient glow behind bars */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-full opacity-55"
+              style={{
+                background:
+                  "radial-gradient(38% 85% at 22% 100%, rgba(251, 146, 60, 0.36) 0%, transparent 100%), radial-gradient(42% 85% at 78% 100%, rgba(251, 146, 60, 0.38) 0%, transparent 100%)",
+              }}
+            />
+
+            {[...LEFT_SKYLINE_BARS, ...RIGHT_SKYLINE_BARS].map((bar, idx) => (
+              <div
+                key={idx}
+                className="absolute bottom-0 rounded-t-[2px]"
+                style={{
+                  left: bar.left,
+                  width: bar.width,
+                  height: bar.height,
+                  opacity: bar.opacity,
+                  background:
+                    "linear-gradient(180deg, rgba(254, 215, 195, 0.08) 0%, rgba(251, 158, 120, 0.62) 38%, rgba(247, 134, 90, 0.72) 68%, rgba(253, 218, 202, 0.32) 100%)",
+                  boxShadow: "0 -4px 18px rgba(249, 115, 22, 0.06)",
+                }}
+              />
+            ))}
+          </div>
+        </footer>
       </div>
-    </main>
+
+      {/* Right Diagonal Hatch Gutter */}
+      <div
+        aria-hidden="true"
+        className="hidden sm:block w-5 md:w-7 lg:w-8 shrink-0 border-l border-[#EFE9E2]"
+        style={stripeBg}
+      />
+    </div>
   );
 }
