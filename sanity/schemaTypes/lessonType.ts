@@ -33,6 +33,14 @@ export const lessonType = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Important for SEO and accessibility.',
+        }),
+      ],
     }),
     defineField({
       name: 'duration',
@@ -40,7 +48,7 @@ export const lessonType = defineType({
       description: 'Duration in seconds',
     }),
     defineField({
-      name: 'isFreePreview',
+      name: 'freePreview',
       title: 'Free Preview',
       type: 'boolean',
       initialValue: false,

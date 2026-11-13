@@ -14,7 +14,8 @@ export const ALL_COURSES_QUERY = defineQuery(`
     coverImage,
     level,
     price,
-    isPopular,
+    popular,
+    "isPopular": popular,
     studentCount,
     instructor->{
       _id,
@@ -47,7 +48,8 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(`
     coverImage,
     level,
     price,
-    isPopular,
+    popular,
+    "isPopular": popular,
     studentCount,
     learningOutcomes[]{
       _key,
@@ -79,7 +81,8 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(`
         title,
         slug,
         duration,
-        isFreePreview,
+        freePreview,
+        "isFreePreview": freePreview,
         studentCount,
         thumbnail
       }
@@ -102,7 +105,8 @@ export const LESSON_BY_SLUG_QUERY = defineQuery(`
     videoUrl,
     thumbnail,
     duration,
-    isFreePreview,
+    freePreview,
+    "isFreePreview": freePreview,
     studentCount,
     notes,
     keyPoints,
@@ -135,7 +139,8 @@ export const LESSON_BY_SLUG_QUERY = defineQuery(`
           title,
           slug,
           duration,
-          isFreePreview
+          freePreview,
+          "isFreePreview": freePreview
         }
       }
     }
@@ -177,7 +182,8 @@ export const INSTRUCTOR_BY_SLUG_QUERY = defineQuery(`
       coverImage,
       level,
       price,
-      isPopular,
+      popular,
+      "isPopular": popular,
       studentCount,
       category->{
         _id,

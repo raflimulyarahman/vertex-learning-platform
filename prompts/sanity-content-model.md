@@ -122,14 +122,14 @@ Implement the complete Sanity content model and Studio configuration for Vertex 
 
 1. `bunx tsc --noEmit`: Typecheck across the entire repository.
 2. `bun run lint`: Run ESLint.
-3. Next.js dev server check / Studio page compilation.
+3. Standalone Studio dev server check / compilation (`cd studio && bun run dev`).
 
 ---
 
 ## 9. Manual Test Steps
 
-1. Start dev server (`bun run dev`).
-2. Navigate to `http://localhost:3000/studio`.
+1. Start the standalone Studio workspace (`cd studio && bun run dev`).
+2. Open the URL reported by the process (`http://localhost:3333`).
 3. Verify Studio loads without schema validation or bundle errors.
 4. Verify document types appear: Courses, Lessons, Instructors, Categories.
 5. Create a draft Category, Instructor, Lesson, and Course with an embedded Module referencing the Lesson. Verify all fields save properly.
