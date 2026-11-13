@@ -34,19 +34,27 @@ export const courseType = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Important for SEO and accessibility.',
+        }),
+      ],
     }),
     defineField({
       name: 'level',
       type: 'string',
       options: {
         list: [
-          {title: 'Beginner', value: 'Beginner'},
-          {title: 'Intermediate', value: 'Intermediate'},
-          {title: 'Advanced', value: 'Advanced'},
+          {title: 'Beginner', value: 'beginner'},
+          {title: 'Intermediate', value: 'intermediate'},
+          {title: 'Advanced', value: 'advanced'},
         ],
         layout: 'radio',
       },
-      initialValue: 'Beginner',
+      initialValue: 'beginner',
     }),
     defineField({
       name: 'price',
@@ -54,7 +62,7 @@ export const courseType = defineType({
       description: 'Price in USD',
     }),
     defineField({
-      name: 'isPopular',
+      name: 'popular',
       title: 'Popular Course',
       type: 'boolean',
       initialValue: false,

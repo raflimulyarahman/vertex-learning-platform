@@ -14,6 +14,7 @@ export interface SanityReference {
  */
 export interface SanityImage {
   _type?: 'image'
+  alt?: string
   asset?: {
     _ref: string
     _type: 'reference'
@@ -64,8 +65,8 @@ export interface Instructor {
   name: string
   slug: SanitySlug
   photo?: SanityImage
-  expertise?: string
-  bio?: string
+  expertise?: string[]
+  bio?: PortableTextBlock[]
 }
 
 /**
@@ -90,6 +91,7 @@ export interface Lesson {
   videoUrl?: string
   thumbnail?: SanityImage
   duration?: number // in seconds
+  freePreview?: boolean
   isFreePreview?: boolean
   studentCount?: number
   notes?: PortableTextBlock[]
@@ -128,8 +130,9 @@ export interface Course {
   slug: SanitySlug
   summary?: string
   coverImage?: SanityImage
-  level?: 'Beginner' | 'Intermediate' | 'Advanced'
+  level?: 'beginner' | 'intermediate' | 'advanced'
   price?: number
+  popular?: boolean
   isPopular?: boolean
   studentCount?: number
   learningOutcomes?: LearningOutcome[]
@@ -147,6 +150,7 @@ export interface LessonSummary {
   title: string
   slug: SanitySlug
   duration?: number
+  freePreview?: boolean
   isFreePreview?: boolean
   studentCount?: number
   thumbnail?: SanityImage
@@ -160,8 +164,8 @@ export interface InstructorSummary {
   name: string
   slug: SanitySlug
   photo?: SanityImage
-  expertise?: string
-  bio?: string
+  expertise?: string[]
+  bio?: PortableTextBlock[]
 }
 
 /**
@@ -184,8 +188,9 @@ export interface CourseListItem {
   slug: SanitySlug
   summary?: string
   coverImage?: SanityImage
-  level?: 'Beginner' | 'Intermediate' | 'Advanced'
+  level?: 'beginner' | 'intermediate' | 'advanced'
   price?: number
+  popular?: boolean
   isPopular?: boolean
   studentCount?: number
   instructor?: InstructorSummary | null
@@ -204,8 +209,9 @@ export interface CourseDetail {
   slug: SanitySlug
   summary?: string
   coverImage?: SanityImage
-  level?: 'Beginner' | 'Intermediate' | 'Advanced'
+  level?: 'beginner' | 'intermediate' | 'advanced'
   price?: number
+  popular?: boolean
   isPopular?: boolean
   studentCount?: number
   learningOutcomes?: LearningOutcome[]
@@ -240,6 +246,7 @@ export interface LessonParentCourse {
       title: string
       slug: SanitySlug
       duration?: number
+      freePreview?: boolean
       isFreePreview?: boolean
     }>
   }>
@@ -256,6 +263,7 @@ export interface LessonDetail {
   videoUrl?: string
   thumbnail?: SanityImage
   duration?: number
+  freePreview?: boolean
   isFreePreview?: boolean
   studentCount?: number
   notes?: PortableTextBlock[]
@@ -274,7 +282,7 @@ export interface InstructorDetail {
   name: string
   slug: SanitySlug
   photo?: SanityImage
-  expertise?: string
-  bio?: string
+  expertise?: string[]
+  bio?: PortableTextBlock[]
   courses?: CourseListItem[]
 }
