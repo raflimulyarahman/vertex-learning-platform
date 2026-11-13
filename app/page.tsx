@@ -437,17 +437,17 @@ export default function VertexHomePage() {
           {/* TOP NAVBAR                                                     */}
           {/* ============================================================== */}
           <header className="border-b border-[#EFE9E2]">
-            <div className="mx-auto flex h-[76px] items-center justify-between px-5 sm:px-9 lg:px-11">
-              <div className="flex items-center gap-8 sm:gap-11">
+            <div className="mx-auto flex h-[76px] items-center justify-between px-4 sm:px-9 lg:px-11">
+              <div className="flex items-center gap-4 sm:gap-11">
                 <Link
                   href="/"
                   aria-label="Vertex Home"
-                  className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F97316] rounded-sm"
+                  className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F97316] rounded-sm shrink-0"
                 >
                   <VertexLogo size="md" />
                 </Link>
 
-                <nav aria-label="Primary" className="flex items-center gap-6 sm:gap-9">
+                <nav aria-label="Primary" className="hidden sm:flex items-center gap-6 sm:gap-9">
                   <Link
                     href="#all-courses"
                     className="text-[14.5px] font-normal text-[#1E293B] hover:text-[#EA580C] transition-colors"
@@ -463,7 +463,7 @@ export default function VertexHomePage() {
                 </nav>
               </div>
 
-              <div className="flex items-center gap-4 sm:gap-5">
+              <div className="flex items-center gap-2 sm:gap-5 shrink-0">
                 <button
                   type="button"
                   aria-label="Notifications"
@@ -473,11 +473,11 @@ export default function VertexHomePage() {
                 </button>
                 <Suspense fallback={<UserAvatar />}>
                   <Show when="signed-out">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <SignInButton mode="modal">
                         <button
                           type="button"
-                          className="text-[14px] font-medium text-[#1E293B] hover:text-[#EA580C] transition-colors cursor-pointer"
+                          className="text-[13.5px] sm:text-[14px] font-medium text-[#1E293B] hover:text-[#EA580C] transition-colors cursor-pointer px-1 py-1"
                         >
                           Sign in
                         </button>
@@ -485,7 +485,7 @@ export default function VertexHomePage() {
                       <SignUpButton mode="modal">
                         <button
                           type="button"
-                          className="inline-flex items-center justify-center h-[36px] px-3.5 rounded-[10px] bg-gradient-to-b from-[#EB7347] to-[#DF5E30] text-white text-[13.5px] font-medium shadow-[0_2px_4px_rgba(223,94,48,0.2)] hover:from-[#E5673B] hover:to-[#D15224] transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA580C]"
+                          className="inline-flex items-center justify-center h-[34px] sm:h-[36px] px-3 sm:px-3.5 rounded-[10px] bg-gradient-to-b from-[#EB7347] to-[#DF5E30] text-white text-[13px] sm:text-[13.5px] font-medium shadow-[0_2px_4px_rgba(223,94,48,0.2)] hover:from-[#E5673B] hover:to-[#D15224] transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA580C] whitespace-nowrap"
                         >
                           Sign up
                         </button>
