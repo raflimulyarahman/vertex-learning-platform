@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,7 +30,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
-        {children}
+        <ClerkProvider
+          appearance={{
+            cssLayerName: "clerk",
+            variables: {
+              colorPrimary: "#F97316",
+              colorForeground: "#0F172A",
+              colorMutedForeground: "#64748B",
+              colorBackground: "#FAF8F6",
+              colorInput: "#FFFFFF",
+              colorInputForeground: "#0F172A",
+              borderRadius: "0.625rem",
+              fontFamily: "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+            },
+            elements: {
+              card: "border border-[#F1EDE8] shadow-vertex-md rounded-2xl bg-[#FAF8F6]",
+            },
+          }}
+        >
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );
