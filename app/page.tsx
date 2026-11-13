@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -8,6 +8,7 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 import { VertexLogo } from "@/components/ui/design-system";
 
 /* -------------------------------------------------------------------------- */
@@ -470,7 +471,38 @@ export default function VertexHomePage() {
                 >
                   <Bell size={19} strokeWidth={1.75} />
                 </button>
-                <UserAvatar />
+                <Suspense fallback={<UserAvatar />}>
+                  <Show when="signed-out">
+                    <div className="flex items-center gap-3">
+                      <SignInButton mode="modal">
+                        <button
+                          type="button"
+                          className="text-[14px] font-medium text-[#1E293B] hover:text-[#EA580C] transition-colors cursor-pointer"
+                        >
+                          Sign in
+                        </button>
+                      </SignInButton>
+                      <SignUpButton mode="modal">
+                        <button
+                          type="button"
+                          className="inline-flex items-center justify-center h-[36px] px-3.5 rounded-[10px] bg-gradient-to-b from-[#EB7347] to-[#DF5E30] text-white text-[13.5px] font-medium shadow-[0_2px_4px_rgba(223,94,48,0.2)] hover:from-[#E5673B] hover:to-[#D15224] transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA580C]"
+                        >
+                          Sign up
+                        </button>
+                      </SignUpButton>
+                    </div>
+                  </Show>
+                  <Show when="signed-in">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox:
+                            "h-[38px] w-[38px] border border-[#E6DFD7] shadow-2xs hover:scale-[1.02] transition-transform",
+                        },
+                      }}
+                    />
+                  </Show>
+                </Suspense>
               </div>
             </div>
           </header>
